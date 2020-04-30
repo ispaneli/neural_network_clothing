@@ -9,6 +9,7 @@
 
 
 **Plot model:**
+
 ![Plot](img/plot_model.png)
 
 
