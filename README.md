@@ -9,7 +9,7 @@
 
 
 **Plot model:**
-![Plot](img/plot_model.img)
+![Plot](img/plot_model.png)
 
 
 100 epochs --> result: 89,32% correct
