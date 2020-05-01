@@ -9,12 +9,16 @@ import numpy as np
 
 # Преобразуем картинки в плоский вектор.
 x_train = x_train.reshape(60_000, 784)
+x_test = x_test.reshape(10_000, 784)
+
 # Нормализуем данные: до в НС поступали бы числа от 0 до 255, после: от 0 до 1.
 # Нужно для алгоритмов оптимизации обучения НС.
 x_train = x_train / 255
+x_test = x_test / 255
 
 # Преобразуем метки в категории.
 y_train = utils.to_categorical(y_train, 10)
+y_test = utils.to_categorical(y_test, 10)
 
 classes = ['T-shirt/top', 'Trouser', 'Pullover',
            'Dress', 'Coat', 'Sandal', 'Shirt',
@@ -37,9 +41,15 @@ print(model.summary())
 utils.plot_model(model, to_file='plot_model.png', show_shapes=True, show_layer_names=False)
 
 # Обучаем НС.
-model.fit(x_train, y_train, batch_size=200, epochs=100, verbose=1)
+model.fit(x_train, y_train, batch_size=200, epochs=100, validation_split=0.2, verbose=1)
 
-# Финальный тест.
+# Главный тест НС.
+scores = model.evaluate(x_test, y_test, verbose=1)
+print(f"Доля верных ответов на тестовых данных: {round(scores[1] * 100, 4)}%")
+
+model.save('fashion_mnist_dense.h5')
+
+# Финальный тест (Глупый).
 predictions = model.predict(x_train)
 print("Результаты по 1-ой картинке:", predictions[0])
 print("Наш ответ:       ", classes[np.argmax(predictions[0])])
